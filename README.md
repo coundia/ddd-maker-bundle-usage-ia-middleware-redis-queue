@@ -124,3 +124,5 @@ Sent KB/sec	1.94 KB/sec	Data sent per second.
 ## Observations
 
 The error rate (5.05%) means some requests are failing (it's ok)
+
+![api-docs.png](doc/api-docs.png)
