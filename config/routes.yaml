@@ -1,0 +1,21 @@
+
+Shared_routes:
+    resource: '../src/Shared/Presentation/Controller/'
+    type: attribute
+
+
+Wallets_routes:
+    resource: '../src/Core/Presentation/Controller/'
+    type: attribute
+
+Prompts_routes:
+    resource: '../src/Core/Presentation/Controller/'
+    type: attribute
+
+Files_routes:
+    resource: '../src/Core/Presentation/Controller/'
+    type: attribute
+
+MessageLoggers_routes:
+    resource: '../src/Core/Presentation/Controller/'
+    type: attribute

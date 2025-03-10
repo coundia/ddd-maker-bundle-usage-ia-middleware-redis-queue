@@ -1,0 +1,18 @@
+# config/packages/messenger.yaml
+framework:
+    messenger:
+        # Transport configuration
+        transports:
+            async:
+                dsn: 'redis://cnd-redis:6379'
+                options:
+                    stream: messages
+                    group: consumers
+
+        buses:
+            messenger.bus.default:
+                middleware:
+                    - App\Shared\Infrastructure\Bus\MessageLoggerMiddleware
+
+        routing:
+            App\Core\Application\Command\CreatePromptCommand: async

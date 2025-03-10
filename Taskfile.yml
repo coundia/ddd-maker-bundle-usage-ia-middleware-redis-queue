@@ -1,0 +1,251 @@
+version: '3'
+
+tasks:
+  # Install dependencies
+  ii:
+    desc: Install PHP and JavaScript dependencies
+    cmds:
+      - docker compose exec php composer install
+      - docker compose exec php npm install
+    silent: false
+
+  # Start the Symfony  server
+  dev:
+    desc: Start the Symfony development server
+    cmds:
+      - docker compose exec php symfony server:start --no-tls --port=8000
+    silent: false
+  # Start the Symfony  server
+  local:serve:
+    desc: Start the Symfony development server
+    cmds:
+      - symfony server:start --no-tls --port=8000
+    silent: false
+
+  # Start compile
+  com:
+    desc: Compile assets
+    cmds:
+      - docker compose exec php php bin/console asset-map:compile
+    silent: false
+
+  # Start the Symfony  server
+  serve:
+    desc: Start the Symfony development server
+    cmds:
+      - docker compose exec php symfony server:start --no-tls --port=8000
+    silent: false
+
+  # Stop the Symfony  server
+  stop:
+    desc: Stop the Symfony development server
+    cmds:
+      - docker compose exec php symfony server:stop
+    silent: false
+
+  # Clear cache
+  rt:
+    desc: Clear Symfony cache
+    cmds:
+      - docker compose exec php php bin/console debug:route
+    silent: false
+
+  # Clear cache
+  cc:
+    desc: Clear Symfony cache
+    cmds:
+      - docker compose exec php php bin/console cache:clear
+      - docker compose exec php php bin/console cache:clear --env=test
+    silent: false
+  # Clear cache
+  local:cc:
+    desc: Clear Symfony cache
+    cmds:
+      - php bin/console cache:clear
+      - php php bin/console cache:clear --env=test
+    silent: false
+
+  # Run database migrations
+  mm:
+    desc: Run database migrations
+    cmds:
+      - docker compose exec php php bin/console doctrine:migrations:migrate --env=test --no-interaction
+      - docker compose exec php php bin/console doctrine:migrations:migrate --no-interaction
+    silent: false
+
+
+  # Run database migrations
+  local:mm:
+    desc: Run database migrations
+    cmds:
+      -  php bin/console doctrine:migrations:migrate --env=test --no-interaction
+      -  php bin/console doctrine:migrations:migrate --no-interaction
+    silent: false
+
+  # Reset database
+  dd:
+    desc: Drop, create, and migrate the database
+    cmds:
+      - docker compose exec php rm -rf migrations/*
+      - docker compose exec php rm -rf var/data*
+      - docker compose exec php php bin/console make:migration --no-interaction
+      - docker compose exec php php bin/console doctrine:database:drop --force
+      - docker compose exec php php bin/console doctrine:database:create
+      - docker compose exec php php bin/console doctrine:database:drop --env=test --force
+      - docker compose exec php php bin/console doctrine:database:create --env=test
+      - docker compose exec php php bin/console doctrine:migrations:migrate --env=dev  --no-interaction
+      - docker compose exec php php bin/console doctrine:migrations:migrate --env=test --no-interaction
+    silent: false
+  # Reset database
+  local:dd:
+    desc: Drop, create, and migrate the database
+    cmds:
+      - rm -rf migrations/*
+      - rm -rf var/data*
+      - php bin/console make:migration --no-interaction
+      - php bin/console doctrine:database:drop --force
+      - php bin/console doctrine:database:create
+      - php bin/console doctrine:database:drop --env=test --force
+      - php bin/console doctrine:database:create --env=test
+      - php bin/console doctrine:migrations:migrate  --no-interaction
+      - php bin/console doctrine:migrations:migrate --env=test --no-interaction
+    silent: false
+
+  # Run tests
+  tests:
+    desc: Run PHPUnit tests
+    cmds:
+      - docker compose exec php php bin/phpunit
+    silent: false
+    # Run tests
+  local:tests:
+    desc: Run PHPUnit tests
+    cmds:
+      - php bin/phpunit
+    silent: false
+
+  # Load Doctrine fixtures
+  ll:
+    desc: Load Doctrine fixtures
+    cmds:
+      - docker compose exec php php bin/console doctrine:fixtures:load --env=test --no-interaction
+    silent: false
+
+  # Run linting for code style
+  lint:
+    desc: Run PHP and YAML linting
+    cmds:
+      - docker compose exec php php bin/console lint:yaml config
+      - docker compose exec php php bin/console lint:yaml translations
+      - docker compose exec php php bin/console lint:yaml src
+      - docker compose exec php php bin/console lint:container
+      - docker compose exec php php bin/console lint:twig
+    silent: false
+
+  # Run Symfony profiler
+  prof:
+    desc: Enable Symfony profiler for  development
+    cmds:
+      - docker compose exec php symfony profiler:start
+    silent: false
+
+  # Build assets
+  build:
+    desc: Compile JavaScript and CSS assets
+    cmds:
+      - docker compose exec php npm run build
+    silent: false
+
+  # Run all setup tasks for a fresh environment
+  setup:
+    desc: Setup the project from scratch
+    cmds:
+      - task: install
+      - task: reset-db
+      - task: load-fixtures
+      - task: build-assets
+      - task: init
+    silent: false
+
+  # Docker-related commands
+  up:
+    desc: Start all Docker containers
+    cmds:
+      - docker compose up -d
+      - echo "http://127.0.0.1:8000/ "
+      - echo "http://127.0.0.1:8000/api/docs"
+    silent: false
+  # startAll
+  start:
+    desc: Start all
+    cmds:
+      - composer install
+      - docker compose up -d --build
+      - echo "http://127.0.0.1:8000/ "
+      - echo "http://127.0.0.1:8000/api/docs"
+    silent: false
+
+  down:
+    desc: Stop all Docker containers
+    cmds:
+      - docker compose down
+    silent: false
+
+  rr:
+    desc: Restart all Docker containers
+    cmds:
+      - docker compose down
+      - docker compose up -d
+    silent: false
+
+  rebuild:
+    desc: Rebuild and restart all Docker containers
+    cmds:
+      - export USER_ID=$(id -u)
+      - export GROUP_ID=$(id -g)
+      - docker compose down --volumes --remove-orphans
+      - docker compose up -d --build
+    silent: false
+
+  clean:
+    desc: Remove Docker volumes, containers, and networks
+    cmds:
+      - docker compose down --volumes --remove-orphans
+      - docker system prune -af
+    silent: false
+
+  cli:
+    desc: Bash docker
+    cmds:
+      - docker compose exec php bash
+    silent: false
+
+  queue:
+    desc: Consume the queue message
+    cmds:
+      - docker compose exec php bin/console mess:cons -vv
+    silent: false
+
+  flushall:
+    desc: Consume the queue message
+    cmds:
+      - docker-compose exec redis redis-cli flushall
+    silent: false
+
+  redis-cli:
+    desc: Consume the queue message
+    cmds:
+      - docker compose exec redis redis-cli
+    silent: false
+
+  messages:
+    desc: Consume the queue message
+    cmds:
+      - docker-compose exec redis redis-cli LRANGE queue:messages 0 -1
+    silent: false
+
+  monitor:
+    desc: Consume the queue message
+    cmds:
+      - docker-compose exec redis redis-cli MONITOR
+    silent: false

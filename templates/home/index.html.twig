@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>{% block title %}Groupe 2CS - Votre Partenaire Numérique{% endblock %}</title>
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+	{% block stylesheets %}
+		<style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: Arial, sans-serif;
+            }
+            html, body {
+                height: 100%;
+                overflow: hidden;
+            }
+            .container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background: #f4f4f4;
+                color: #333;
+                text-align: center;
+            }
+            .coming-soon {
+                background: #ffcc00;
+                color: #222;
+                padding: 20px;
+                font-size: 1.5rem;
+                font-weight: bold;
+                border-radius: 10px;
+                animation: blink 1s infinite alternate;
+                margin-top: 20px;
+            }
+            @keyframes blink {
+                from { opacity: 1; }
+                to { opacity: 0.5; }
+            }
+            .content {
+                margin: 20px 0;
+            }
+            .fun-zone {
+                font-size: 2rem;
+                margin: 30px 0;
+                animation: spin 2s linear infinite;
+            }
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+            .contact {
+                background: #f4f4f4;
+                color: #222;
+                padding: 20px;
+                border-radius: 10px;
+                width: 80%;
+                max-width: 500px;
+                margin-top: 20px;
+            }
+            .contact a {
+                color: #00bcd4;
+                text-decoration: none;
+                font-weight: bold;
+            }
+		</style>
+	{% endblock %}
+
+	{% block javascripts %}
+	{% endblock %}
+</head>
+<body>
+{% block body %}
+	<div class="container">
+
+		<div class="coming-soon">🚀  Groupe 2CS ! 🚀</div>
+		<div class="content">
+
+			<p>Nous proposons des solutions technologiques innovantes adaptées aux besoins des entreprises modernes et particuliers.</p>
+		</div>
+		<div class="fun-zone">🎉✨</div>
+		<div class="contact">
+
+			<p>Contact: <a href="mailto:contact@groupe2cs.com">contact@groupe2cs.com</a></p>
+		</div>
+	</div>
+{% endblock %}
+</body>
+</html>

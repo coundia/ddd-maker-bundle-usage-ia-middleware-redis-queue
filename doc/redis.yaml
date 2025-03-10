@@ -1,0 +1,9 @@
+framework:
+  messenger:
+    buses:
+      command.bus: ~
+    routing:
+      'App\Message\ProcessPrompt': 'redis://localhost'
+    transports:
+      redis:
+        dsn: '%env(REDIS_URL)%'
