@@ -38,6 +38,9 @@ mkdir -p config/jwt
 openssl genrsa -aes256 -passout pass:your_passphrase -out config/jwt/private.pem 4096
 openssl rsa -pubout -passin pass:your_passphrase -in config/jwt/private.pem -out config/jwt/public.pem
 
+composer require nelmio/cors-bundle
+
+
 ```
 # Api doc
 
