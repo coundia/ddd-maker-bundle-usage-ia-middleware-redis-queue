@@ -11,12 +11,13 @@ composer update cnd/ddd-maker-bundle --dev
 
 
 ```php
-<<?php
+<?php
 declare(strict_types=1);
 
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'wallets')]
@@ -24,6 +25,7 @@ class Wallet{
 	#[ORM\Column(type: 'datetime_immutable')]
 	private \DateTimeImmutable $createdAt;
 	#[ORM\Id]
+	#[ORM\GeneratedValue(strategy: 'NONE')]
 	#[ORM\Column(type: 'string', unique: true)]
 	private string $id;
 
@@ -40,6 +42,7 @@ class Wallet{
 
 	){
 		$this->createdAt = new \DateTimeImmutable();
+		$this->id = Uuid::uuid4()->toString();
 	}
 
 	public function getCreatedAt(): \DateTimeImmutable{
@@ -49,7 +52,7 @@ class Wallet{
 	public function getId(): string{
 		return $this->id;
 	}
-	
+
 }
 ```
 
